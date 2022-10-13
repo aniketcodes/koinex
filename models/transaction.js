@@ -8,11 +8,10 @@ const transactionSchema = new mongoose.Schema(
     },
     timeStamp: {
       type: String,
-      default: null,
     },
     hash: {
       type: String,
-      default: null,
+      unique: true,
     },
     nonce: {
       type: String,
@@ -24,7 +23,6 @@ const transactionSchema = new mongoose.Schema(
     },
     transactionIndex: {
       type: String,
-      default: null,
     },
     from: { type: String, default: null },
     to: { type: String, default: null },
@@ -46,5 +44,4 @@ const transactionSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model( 'Transaction', transactionSchema )
-
+module.exports = mongoose.model("Transaction", transactionSchema);
