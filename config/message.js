@@ -8,6 +8,7 @@ const message = {
   },
   status: {
     badRequest: "Bad Request",
+    internalServerError:"Internal Server Error"
   },
 };
 
