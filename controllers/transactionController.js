@@ -49,7 +49,16 @@ module.exports = {
         })
       );
 
-      data.count = await TransactionModel.countDocuments();
+      data.count = await TransactionModel.countDocuments({
+        $or: [
+          {
+            to: address,
+          },
+          {
+            from: address,
+          },
+        ],
+      });
       return res.send(
         Response.successResponse({
           message: Message.success.transactionDetails,
