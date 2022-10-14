@@ -75,6 +75,12 @@ module.exports = {
     }
   },
 
+/**
+ * @description This Function returns the balance of the user ans the current ethereum pric in INR
+ * @param {*} req It contains the address of the user
+ * @returns An object containing balance and current ethereum price in INR
+ */
+
   getBalance: async function (req, res) {
     try {
       const address = req.query.address;
