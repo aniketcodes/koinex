@@ -17,7 +17,7 @@ npm install
 
 ```API endpoint: http://localhost:8000/api/transaction/fetch ```
 
-![Task-1](https://i.postimg.cc/mDN494yf/Screenshot-from-2022-10-14-21-07-01.png)
+[![Task-1](https://i.postimg.cc/mDN494yf/Screenshot-from-2022-10-14-21-07-01.png)](https://postimg.cc/CB19yW2m)
 
 * Task 2 - Build a system within the same server to fetch the price of Ethereum every 10 minutes and store it in the database. 
 
