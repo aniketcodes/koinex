@@ -6,6 +6,12 @@ const {
 } = require("../models/tokenPrice");
 
 module.exports = {
+  
+  /**
+   * @description This function fetches the current Ethereum price in INR and stores in database
+   * @returns null
+   */
+
   fetchEthPriceInInr: async function () {
     try {
       const data = await ExternalHelper.fetchEtherumPriceInInr();
