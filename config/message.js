@@ -5,6 +5,7 @@ const message = {
   error: {
     internalServerError: "Internal Server Error",
     transactionDetails: "Error in fetching transaction",
+    noTransactionFound:"No transaction found"
   },
   status: {
     badRequest: "Bad Request",
