@@ -1,5 +1,4 @@
 const Joi = require("joi");
-
 const Message = require("../config/message");
 const Response = require("../config/response");
 const CommonHelper = require("../helpers/commons");
@@ -63,6 +62,95 @@ module.exports = {
         Response.successResponse({
           message: Message.success.transactionDetails,
           data,
+        })
+      );
+    } catch (error) {
+      return res.json(
+        Response.errorResponse({
+          status: Message.status.internalServerError,
+          error,
+          code: 500,
+        })
+      );
+    }
+  },
+
+  getBalance: async function (req, res) {
+    try {
+      const address = req.query.address;
+      let schema = Joi.object().keys({
+        address: Joi.string().required(),
+      });
+
+      await CommonHelper.verifyJoiSchema({ address }, schema);
+
+      const [balance] = await TransactionModel.aggregate([
+        {
+          $match: {
+            $or: [
+              {
+                to: address,
+              },
+              {
+                from: address,
+              },
+            ],
+          },
+        },
+        {
+          $addFields: {
+            convertedValue: {
+              $toDouble: "$value",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            credit: {
+              $sum: {
+                $cond: [{ $eq: ["$to", address] }, "$convertedValue", 0],
+              },
+            },
+            debit: {
+              $sum: {
+                $cond: [{ $eq: ["$from", address] }, "$convertedValue", 0],
+              },
+            },
+          },
+        },
+        {
+          $addFields: {
+            balance: {
+              $subtract: ["$credit", "$debit"],
+            },
+          },
+        },
+
+        {
+          $project: {
+            _id: 0,
+            balance: 1,
+          },
+        },
+      ]);
+
+      if (!balance) {
+        return res.send(
+          Response.errorResponse({
+            status: Message.error.noTransactionFound,
+            code: 404,
+          })
+        );
+      }
+
+      const { ethereum } = await ExternalHelper.fetchEtherumPriceInInr();
+      const currentEthPriceInInr = ethereum.inr;
+
+      return res.send(
+        Response.successResponse({
+          message: Message.success.transactionDetails,
+          data: { balance: balance.balance, currentEthPriceInInr },
         })
       );
     } catch (error) {
