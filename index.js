@@ -4,6 +4,7 @@ const express = require("express");
 
 const swaggerUi = require("swagger-ui-express");
 const db = require("./config/mongoose");
+const cron = require("./controllers/cronController")();
 
 const app = express();
 app.use(express.json({ limit: "50mb" }));
