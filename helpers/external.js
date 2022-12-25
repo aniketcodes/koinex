@@ -25,4 +25,16 @@ module.exports = {
       throw error;
     }
   },
+
+  fetchEthereumPricInInrForADate: async function (date) {
+    try {
+      const { data } = await Axios.get(
+        `${process.env.ETH_TO_INR_PRICE_HISTORY_API}${date}`
+      );
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

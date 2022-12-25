@@ -44,7 +44,19 @@ module.exports = {
             hash: transaction?.hash,
           });
 
-          if (!tx) await TransactionModel.create(transaction);
+          if (!tx) {
+            const { timeStamp } = transaction;
+            let txDate = new Date(timeStamp * 1000);
+
+            let txFormattedDate = `${txDate.getDate()}-${txDate.getMonth()}-${txDate.getFullYear()}`;
+            const priceHistoryEther =
+              await ExternalHelper.fetchEthereumPricInInrForADate(
+                txFormattedDate
+              );
+            transaction.ethPriceInInr =
+              priceHistoryEther?.market_data?.current_price?.inr;
+            await TransactionModel.create(transaction);
+          }
         })
       );
 
@@ -75,11 +87,11 @@ module.exports = {
     }
   },
 
-/**
- * @description This Function returns the balance of the user ans the current ethereum pric in INR
- * @param {*} req It contains the address of the user
- * @returns An object containing balance and current ethereum price in INR
- */
+  /**
+   * @description This Function returns the balance of the user ans the current ethereum pric in INR
+   * @param {*} req It contains the address of the user
+   * @returns An object containing balance and current ethereum price in INR
+   */
 
   getBalance: async function (req, res) {
     try {

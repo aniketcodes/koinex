@@ -38,6 +38,7 @@ const transactionSchema = new mongoose.Schema(
     confirmations: { type: String, default: null },
     methodId: { type: String, default: null },
     functionName: { type: String, default: null },
+    ethPriceInInr:{type:String,default:null}
   },
   {
     timestamps: true,
